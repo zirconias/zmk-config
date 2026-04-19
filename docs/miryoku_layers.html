@@ -1,0 +1,1058 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Miryoku Layer Reference — Corne Choc Pro</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg-primary: #0a0a0f;
+    --bg-secondary: #12121a;
+    --bg-card: #1a1a2e;
+    --bg-key: #16213e;
+    --bg-key-hover: #1e2d50;
+    --text-primary: #e8e8f0;
+    --text-secondary: #9898b0;
+    --text-muted: #5a5a78;
+    --accent-blue: #4fc3f7;
+    --accent-purple: #b388ff;
+    --accent-pink: #f48fb1;
+    --accent-green: #81c784;
+    --accent-orange: #ffb74d;
+    --accent-cyan: #80deea;
+    --accent-red: #ef5350;
+    --accent-yellow: #fff176;
+    --accent-teal: #4db6ac;
+    --accent-lime: #aed581;
+    --border-color: rgba(255,255,255,0.06);
+    --shadow-glow: 0 0 40px rgba(79, 195, 247, 0.08);
+    --radius: 12px;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    font-family: 'Inter', -apple-system, sans-serif;
+    background: var(--bg-primary);
+    color: var(--text-primary);
+    min-height: 100vh;
+    overflow-x: hidden;
+  }
+
+  body::before {
+    content: '';
+    position: fixed;
+    top: 0; left: 0; right: 0; bottom: 0;
+    background:
+      radial-gradient(ellipse at 20% 0%, rgba(79, 195, 247, 0.06) 0%, transparent 50%),
+      radial-gradient(ellipse at 80% 100%, rgba(179, 136, 255, 0.05) 0%, transparent 50%);
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  .container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 40px 24px;
+    position: relative;
+    z-index: 1;
+  }
+
+  header {
+    text-align: center;
+    margin-bottom: 48px;
+  }
+
+  header h1 {
+    font-size: 2.6rem;
+    font-weight: 800;
+    letter-spacing: -0.03em;
+    background: linear-gradient(135deg, var(--accent-blue), var(--accent-purple));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    margin-bottom: 8px;
+  }
+
+  header .subtitle {
+    font-size: 1rem;
+    color: var(--text-secondary);
+    font-weight: 400;
+  }
+
+  header .config-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    margin-top: 16px;
+    padding: 8px 16px;
+    background: rgba(79, 195, 247, 0.08);
+    border: 1px solid rgba(79, 195, 247, 0.15);
+    border-radius: 100px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.8rem;
+    color: var(--accent-blue);
+  }
+
+  .config-badge .dot {
+    width: 6px; height: 6px;
+    border-radius: 50%;
+    background: var(--accent-green);
+    animation: pulse 2s ease-in-out infinite;
+  }
+
+  @keyframes pulse {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.4; }
+  }
+
+  /* Layer Navigation */
+  .layer-nav {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    justify-content: center;
+    margin-bottom: 40px;
+    padding: 12px;
+    background: var(--bg-secondary);
+    border-radius: 16px;
+    border: 1px solid var(--border-color);
+  }
+
+  .layer-nav button {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.78rem;
+    font-weight: 600;
+    padding: 8px 16px;
+    border-radius: 10px;
+    border: 1px solid transparent;
+    cursor: pointer;
+    transition: all 0.25s ease;
+    background: transparent;
+    color: var(--text-secondary);
+    letter-spacing: 0.02em;
+  }
+
+  .layer-nav button:hover {
+    background: rgba(255,255,255,0.04);
+    color: var(--text-primary);
+  }
+
+  .layer-nav button.active {
+    border-color: var(--layer-accent, var(--accent-blue));
+    background: rgba(79, 195, 247, 0.1);
+    color: var(--text-primary);
+    box-shadow: 0 0 16px rgba(79, 195, 247, 0.1);
+  }
+
+  /* Layer Section */
+  .layer-section {
+    display: none;
+    animation: fadeIn 0.35s ease;
+  }
+
+  .layer-section.active {
+    display: block;
+  }
+
+  @keyframes fadeIn {
+    from { opacity: 0; transform: translateY(12px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+
+  .layer-header {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    margin-bottom: 24px;
+  }
+
+  .layer-header .layer-icon {
+    width: 48px; height: 48px;
+    border-radius: 14px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.4rem;
+    flex-shrink: 0;
+  }
+
+  .layer-header .layer-info h2 {
+    font-size: 1.5rem;
+    font-weight: 700;
+    letter-spacing: -0.02em;
+  }
+
+  .layer-header .layer-info p {
+    font-size: 0.85rem;
+    color: var(--text-secondary);
+    margin-top: 2px;
+  }
+
+  /* Keyboard Layout */
+  .keyboard {
+    background: var(--bg-card);
+    border: 1px solid var(--border-color);
+    border-radius: 20px;
+    padding: 32px 24px;
+    box-shadow: var(--shadow-glow);
+    margin-bottom: 20px;
+  }
+
+  .keyboard-row {
+    display: flex;
+    justify-content: center;
+    gap: 6px;
+    margin-bottom: 6px;
+  }
+
+  .keyboard-row:last-child {
+    margin-bottom: 0;
+  }
+
+  /* Split gap between halves */
+  .split-gap {
+    width: 32px;
+    flex-shrink: 0;
+  }
+
+  .key {
+    width: 72px;
+    min-height: 56px;
+    border-radius: 10px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 6px 4px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.7rem;
+    font-weight: 500;
+    transition: all 0.2s ease;
+    cursor: default;
+    position: relative;
+    border: 1px solid rgba(255,255,255,0.06);
+    text-align: center;
+    line-height: 1.3;
+  }
+
+  .key:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 16px rgba(0,0,0,0.3);
+    border-color: rgba(255,255,255,0.12);
+  }
+
+  .key .main-label {
+    font-size: 0.78rem;
+    font-weight: 600;
+    color: var(--text-primary);
+  }
+
+  .key .sub-label {
+    font-size: 0.58rem;
+    color: var(--text-muted);
+    margin-top: 2px;
+    font-weight: 400;
+  }
+
+  .key .hold-label {
+    font-size: 0.55rem;
+    color: var(--accent-purple);
+    margin-top: 3px;
+    font-weight: 500;
+    opacity: 0.9;
+  }
+
+  /* Key types */
+  .key-alpha {
+    background: linear-gradient(180deg, #1e2d50 0%, #162040 100%);
+  }
+  .key-alpha:hover { background: linear-gradient(180deg, #253860 0%, #1c2850 100%); }
+
+  .key-homerow {
+    background: linear-gradient(180deg, #2a1f50 0%, #201840 100%);
+    border-color: rgba(179, 136, 255, 0.15);
+  }
+  .key-homerow:hover { background: linear-gradient(180deg, #332860 0%, #282050 100%); }
+
+  .key-thumb {
+    background: linear-gradient(180deg, #1a3530 0%, #142828 100%);
+    border-color: rgba(129, 199, 132, 0.15);
+    min-height: 52px;
+  }
+  .key-thumb:hover { background: linear-gradient(180deg, #224440 0%, #1c3535 100%); }
+
+  .key-mod {
+    background: linear-gradient(180deg, #3a1a2e 0%, #2a1422 100%);
+    border-color: rgba(244, 143, 177, 0.15);
+  }
+  .key-mod:hover { background: linear-gradient(180deg, #4a2038 0%, #351a2c 100%); }
+
+  .key-nav {
+    background: linear-gradient(180deg, #1a3050 0%, #142540 100%);
+    border-color: rgba(79, 195, 247, 0.15);
+  }
+  .key-nav:hover { background: linear-gradient(180deg, #203a60 0%, #1a3050 100%); }
+
+  .key-num {
+    background: linear-gradient(180deg, #2a3020 0%, #202818 100%);
+    border-color: rgba(174, 213, 129, 0.15);
+  }
+  .key-num:hover { background: linear-gradient(180deg, #354028 0%, #283020 100%); }
+
+  .key-sym {
+    background: linear-gradient(180deg, #3a2a10 0%, #2a2008 100%);
+    border-color: rgba(255, 183, 77, 0.15);
+  }
+  .key-sym:hover { background: linear-gradient(180deg, #4a3818 0%, #352a10 100%); }
+
+  .key-fn {
+    background: linear-gradient(180deg, #1a2a3a 0%, #14222e 100%);
+    border-color: rgba(128, 222, 234, 0.15);
+  }
+  .key-fn:hover { background: linear-gradient(180deg, #203545 0%, #1a2c38 100%); }
+
+  .key-media {
+    background: linear-gradient(180deg, #2a1a3a 0%, #20142e 100%);
+    border-color: rgba(186, 147, 255, 0.12);
+  }
+  .key-media:hover { background: linear-gradient(180deg, #352248 0%, #281c38 100%); }
+
+  .key-mouse {
+    background: linear-gradient(180deg, #1a3a2a 0%, #142e20 100%);
+    border-color: rgba(77, 182, 172, 0.15);
+  }
+  .key-mouse:hover { background: linear-gradient(180deg, #204838 0%, #1a3828 100%); }
+
+  .key-none {
+    background: rgba(255,255,255,0.015);
+    border-color: rgba(255,255,255,0.03);
+    opacity: 0.35;
+  }
+  .key-none:hover { transform: none; box-shadow: none; }
+
+  .key-boot {
+    background: linear-gradient(180deg, #4a1515 0%, #351010 100%);
+    border-color: rgba(239, 83, 80, 0.2);
+  }
+
+  .key-layer-switch {
+    background: linear-gradient(180deg, #0d3030 0%, #082525 100%);
+    border-color: rgba(77, 182, 172, 0.2);
+  }
+
+  .key-outer {
+    background: rgba(255,255,255,0.01);
+    border-color: rgba(255,255,255,0.03);
+    opacity: 0.2;
+    width: 48px;
+    min-height: 56px;
+  }
+
+  /* Encoder key style */
+  .key-encoder {
+    background: rgba(255,255,255,0.01);
+    border-color: rgba(255,255,255,0.03);
+    opacity: 0.2;
+    width: 48px;
+    min-height: 56px;
+  }
+
+  /* Legend */
+  .legend {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 16px;
+    justify-content: center;
+    padding: 20px;
+    background: var(--bg-secondary);
+    border-radius: 14px;
+    border: 1px solid var(--border-color);
+    margin-bottom: 40px;
+  }
+
+  .legend-item {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 0.75rem;
+    color: var(--text-secondary);
+  }
+
+  .legend-swatch {
+    width: 16px;
+    height: 16px;
+    border-radius: 4px;
+    border: 1px solid rgba(255,255,255,0.1);
+  }
+
+  /* Thumb row centering with split */
+  .thumb-row {
+    justify-content: center;
+    padding-top: 8px;
+  }
+
+  /* Responsive */
+  @media (max-width: 900px) {
+    .key { width: 56px; min-height: 48px; font-size: 0.6rem; }
+    .key .main-label { font-size: 0.68rem; }
+    .split-gap { width: 16px; }
+    .keyboard { padding: 20px 12px; }
+    header h1 { font-size: 1.8rem; }
+  }
+
+  @media (max-width: 600px) {
+    .key { width: 42px; min-height: 40px; font-size: 0.5rem; padding: 4px 2px;}
+    .key .main-label { font-size: 0.58rem; }
+    .key .sub-label, .key .hold-label { font-size: 0.45rem; }
+    .split-gap { width: 8px; }
+    header h1 { font-size: 1.4rem; }
+    .layer-nav button { padding: 6px 10px; font-size: 0.68rem; }
+  }
+
+  .layer-desc {
+    background: var(--bg-secondary);
+    border: 1px solid var(--border-color);
+    border-radius: 14px;
+    padding: 16px 20px;
+    margin-bottom: 24px;
+    font-size: 0.85rem;
+    color: var(--text-secondary);
+    line-height: 1.6;
+  }
+
+  .layer-desc strong { color: var(--text-primary); }
+  .layer-desc code {
+    font-family: 'JetBrains Mono', monospace;
+    background: rgba(255,255,255,0.05);
+    padding: 2px 6px;
+    border-radius: 4px;
+    font-size: 0.78rem;
+  }
+
+  /* Scroll indicator */
+  .scroll-top {
+    position: fixed;
+    bottom: 24px;
+    right: 24px;
+    width: 44px;
+    height: 44px;
+    border-radius: 12px;
+    background: var(--bg-card);
+    border: 1px solid var(--border-color);
+    color: var(--text-secondary);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    opacity: 0;
+    transition: all 0.3s ease;
+    z-index: 100;
+    font-size: 1.2rem;
+  }
+
+  .scroll-top.visible {
+    opacity: 1;
+  }
+
+  .scroll-top:hover {
+    background: var(--bg-key);
+    color: var(--text-primary);
+  }
+
+  /* Activator Key Reference */
+  .activator-ref {
+    margin-top: 8px;
+    margin-bottom: 20px;
+  }
+
+  .activator-ref-header {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 12px;
+    padding: 10px 16px;
+    background: var(--bg-secondary);
+    border: 1px solid var(--border-color);
+    border-radius: 12px;
+  }
+
+  .activator-ref-header .activator-icon {
+    font-size: 1rem;
+  }
+
+  .activator-ref-header span {
+    font-size: 0.8rem;
+    font-weight: 600;
+    color: var(--text-secondary);
+  }
+
+  .activator-ref-header strong {
+    color: var(--text-primary);
+  }
+
+  /* Highlighted key glow on full keyboard */
+  .key.key-activator-glow {
+    border-color: var(--activator-color, var(--accent-green)) !important;
+    box-shadow: 0 0 18px var(--activator-glow, rgba(129,199,132,0.3)),
+               0 0 40px var(--activator-glow, rgba(129,199,132,0.1)),
+               inset 0 0 12px var(--activator-glow, rgba(129,199,132,0.06)) !important;
+    animation: activatorPulse 2.5s ease-in-out infinite;
+    z-index: 2;
+    transform: scale(1.06);
+  }
+
+  .key.key-activator-glow .main-label {
+    color: var(--activator-color, var(--accent-green)) !important;
+  }
+
+  .key.key-activator-glow .hold-label {
+    color: var(--activator-color, var(--accent-green)) !important;
+    opacity: 1 !important;
+    font-weight: 700 !important;
+    font-size: 0.6rem !important;
+  }
+
+  @keyframes activatorPulse {
+    0%, 100% { box-shadow: 0 0 14px var(--activator-glow, rgba(129,199,132,0.25)), 0 0 30px var(--activator-glow, rgba(129,199,132,0.08)); }
+    50% { box-shadow: 0 0 22px var(--activator-glow, rgba(129,199,132,0.4)), 0 0 50px var(--activator-glow, rgba(129,199,132,0.15)); }
+  }
+
+  .keyboard.activator-keyboard {
+    opacity: 0.7;
+    position: relative;
+  }
+
+  .keyboard.activator-keyboard .key:not(.key-activator-glow) {
+    opacity: 0.35;
+  }
+
+  .keyboard.activator-keyboard .key.key-activator-glow {
+    opacity: 1;
+  }
+
+  /* Text-only activator badge (for Extra/Tap) */
+  .activator-badge {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 12px 18px;
+    background: var(--bg-secondary);
+    border: 1px solid var(--border-color);
+    border-radius: 12px;
+    margin-top: 8px;
+    margin-bottom: 20px;
+    font-size: 0.82rem;
+    color: var(--text-secondary);
+  }
+
+  .activator-badge .activator-icon {
+    font-size: 1rem;
+  }
+</style>
+</head>
+<body>
+
+<div class="container">
+  <header>
+    <h1>Miryoku Layers</h1>
+    <p class="subtitle">Corne Choc Pro — 46 Key Split Ergonomic Layout</p>
+    <div class="config-badge">
+      <span class="dot"></span>
+      Base: QWERTY &nbsp;·&nbsp; Extra: Colemak-DH &nbsp;·&nbsp; Tap: QWERTY
+    </div>
+  </header>
+
+  <nav class="layer-nav" id="layer-nav"></nav>
+
+  <div id="layers-container"></div>
+</div>
+
+<button class="scroll-top" id="scroll-top" onclick="window.scrollTo({top:0,behavior:'smooth'})">↑</button>
+
+<script>
+// Layer definitions based on the actual Miryoku config
+// Format: 10-col × 4-row grid (left-5, right-5 per row)
+// Each key: { label, hold?, sub?, type }
+
+const layers = [
+  {
+    id: 'base',
+    name: 'Base',
+    icon: '⌨️',
+    accent: '#4fc3f7',
+    activator: null, // default layer
+    desc: 'Primary QWERTY alpha layer. Home row mods on the home position (GUI/Alt/Ctrl/Shift). Thumb keys access all other layers via hold. Outer pinky keys access the Button layer.',
+    keys: [
+      // Row 0
+      [
+        {l:'Q', t:'alpha'}, {l:'W', t:'alpha'}, {l:'E', t:'alpha'}, {l:'R', t:'alpha'}, {l:'T', t:'alpha'},
+        {l:'Y', t:'alpha'}, {l:'U', t:'alpha'}, {l:'I', t:'alpha'}, {l:'O', t:'alpha'}, {l:'P', t:'alpha'},
+      ],
+      // Row 1 (home row with mods)
+      [
+        {l:'A', h:'GUI', t:'homerow'}, {l:'S', h:'ALT', t:'homerow'}, {l:'D', h:'CTRL', t:'homerow'}, {l:'F', h:'SHIFT', t:'homerow'}, {l:'G', t:'alpha'},
+        {l:'H', t:'alpha'}, {l:'J', h:'SHIFT', t:'homerow'}, {l:'K', h:'CTRL', t:'homerow'}, {l:'L', h:'ALT', t:'homerow'}, {l:"'", h:'GUI', t:'homerow'},
+      ],
+      // Row 2
+      [
+        {l:'Z', h:'BUTTON', t:'homerow'}, {l:'X', h:'RALT', t:'homerow'}, {l:'C', t:'alpha'}, {l:'V', t:'alpha'}, {l:'B', t:'alpha'},
+        {l:'N', t:'alpha'}, {l:'M', t:'alpha'}, {l:',', t:'alpha'}, {l:'.', h:'RALT', t:'homerow'}, {l:'/', h:'BUTTON', t:'homerow'},
+      ],
+      // Row 3 (thumbs)
+      [
+        {l:'', t:'none'}, {l:'', t:'none'}, {l:'ESC', h:'MEDIA', t:'thumb'}, {l:'SPC', h:'NAV', t:'thumb'}, {l:'TAB', h:'MOUSE', t:'thumb'},
+        {l:'RET', h:'SYM', t:'thumb'}, {l:'BSPC', h:'NUM', t:'thumb'}, {l:'DEL', h:'FUN', t:'thumb'}, {l:'', t:'none'}, {l:'', t:'none'},
+      ]
+    ]
+  },
+  {
+    id: 'extra',
+    name: 'Extra',
+    icon: '🔄',
+    accent: '#b388ff',
+    activator: {type: 'layer-switch', text: 'Layer switch from Nav, Media, or Mouse layers'},
+    desc: 'Alternate alpha layer: <strong>Colemak-DH</strong>. Same modifier structure as Base. Activated from Nav/Media/Mouse layer switches.',
+    keys: [
+      [
+        {l:'Q', t:'alpha'}, {l:'W', t:'alpha'}, {l:'F', t:'alpha'}, {l:'P', t:'alpha'}, {l:'B', t:'alpha'},
+        {l:'J', t:'alpha'}, {l:'L', t:'alpha'}, {l:'U', t:'alpha'}, {l:'Y', t:'alpha'}, {l:"'", t:'alpha'},
+      ],
+      [
+        {l:'A', h:'GUI', t:'homerow'}, {l:'R', h:'ALT', t:'homerow'}, {l:'S', h:'CTRL', t:'homerow'}, {l:'T', h:'SHIFT', t:'homerow'}, {l:'G', t:'alpha'},
+        {l:'M', t:'alpha'}, {l:'N', h:'SHIFT', t:'homerow'}, {l:'E', h:'CTRL', t:'homerow'}, {l:'I', h:'ALT', t:'homerow'}, {l:'O', h:'GUI', t:'homerow'},
+      ],
+      [
+        {l:'Z', h:'BUTTON', t:'homerow'}, {l:'X', h:'RALT', t:'homerow'}, {l:'C', t:'alpha'}, {l:'D', t:'alpha'}, {l:'V', t:'alpha'},
+        {l:'K', t:'alpha'}, {l:'H', t:'alpha'}, {l:',', t:'alpha'}, {l:'.', h:'RALT', t:'homerow'}, {l:'/', h:'BUTTON', t:'homerow'},
+      ],
+      [
+        {l:'', t:'none'}, {l:'', t:'none'}, {l:'ESC', h:'MEDIA', t:'thumb'}, {l:'SPC', h:'NAV', t:'thumb'}, {l:'TAB', h:'MOUSE', t:'thumb'},
+        {l:'RET', h:'SYM', t:'thumb'}, {l:'BSPC', h:'NUM', t:'thumb'}, {l:'DEL', h:'FUN', t:'thumb'}, {l:'', t:'none'}, {l:'', t:'none'},
+      ]
+    ]
+  },
+  {
+    id: 'tap',
+    name: 'Tap',
+    icon: '👆',
+    accent: '#80deea',
+    activator: {type: 'layer-switch', text: 'Layer switch from Nav, Media, or Mouse layers'},
+    desc: 'Pure tap layer (QWERTY) — <strong>no home row mods</strong>. Useful when mods interfere with fast typing or gaming. Same alpha layout as Base but without any hold behaviors.',
+    keys: [
+      [
+        {l:'Q', t:'alpha'}, {l:'W', t:'alpha'}, {l:'E', t:'alpha'}, {l:'R', t:'alpha'}, {l:'T', t:'alpha'},
+        {l:'Y', t:'alpha'}, {l:'U', t:'alpha'}, {l:'I', t:'alpha'}, {l:'O', t:'alpha'}, {l:'P', t:'alpha'},
+      ],
+      [
+        {l:'A', t:'alpha'}, {l:'S', t:'alpha'}, {l:'D', t:'alpha'}, {l:'F', t:'alpha'}, {l:'G', t:'alpha'},
+        {l:'H', t:'alpha'}, {l:'J', t:'alpha'}, {l:'K', t:'alpha'}, {l:'L', t:'alpha'}, {l:"'", t:'alpha'},
+      ],
+      [
+        {l:'Z', t:'alpha'}, {l:'X', t:'alpha'}, {l:'C', t:'alpha'}, {l:'V', t:'alpha'}, {l:'B', t:'alpha'},
+        {l:'N', t:'alpha'}, {l:'M', t:'alpha'}, {l:',', t:'alpha'}, {l:'.', t:'alpha'}, {l:'/', t:'alpha'},
+      ],
+      [
+        {l:'', t:'none'}, {l:'', t:'none'}, {l:'ESC', t:'thumb'}, {l:'SPC', t:'thumb'}, {l:'TAB', t:'thumb'},
+        {l:'RET', t:'thumb'}, {l:'BSPC', t:'thumb'}, {l:'DEL', t:'thumb'}, {l:'', t:'none'}, {l:'', t:'none'},
+      ]
+    ]
+  },
+  {
+    id: 'button',
+    name: 'Button',
+    icon: '🖱️',
+    accent: '#f48fb1',
+    activator: {type: 'pinky', keys: [{row:2, col:0, label:'Z'}, {row:2, col:9, label:'/'}], text: 'Hold Z or /'},
+    desc: 'Mouse button and clipboard layer. Accessed by holding the outer pinky keys (Z or /). Provides <strong>Undo/Cut/Copy/Paste/Redo</strong> on both halves, plus mouse buttons on the thumbs.',
+    keys: [
+      [
+        {l:'UNDO', t:'nav'}, {l:'CUT', t:'nav'}, {l:'COPY', t:'nav'}, {l:'PASTE', t:'nav'}, {l:'REDO', t:'nav'},
+        {l:'REDO', t:'nav'}, {l:'PASTE', t:'nav'}, {l:'COPY', t:'nav'}, {l:'CUT', t:'nav'}, {l:'UNDO', t:'nav'},
+      ],
+      [
+        {l:'GUI', t:'mod'}, {l:'ALT', t:'mod'}, {l:'CTRL', t:'mod'}, {l:'SHIFT', t:'mod'}, {l:'—', t:'none'},
+        {l:'—', t:'none'}, {l:'SHIFT', t:'mod'}, {l:'CTRL', t:'mod'}, {l:'ALT', t:'mod'}, {l:'GUI', t:'mod'},
+      ],
+      [
+        {l:'UNDO', t:'nav'}, {l:'CUT', t:'nav'}, {l:'COPY', t:'nav'}, {l:'PASTE', t:'nav'}, {l:'REDO', t:'nav'},
+        {l:'REDO', t:'nav'}, {l:'PASTE', t:'nav'}, {l:'COPY', t:'nav'}, {l:'CUT', t:'nav'}, {l:'UNDO', t:'nav'},
+      ],
+      [
+        {l:'', t:'none'}, {l:'', t:'none'}, {l:'BTN3', t:'mouse'}, {l:'BTN1', t:'mouse'}, {l:'BTN2', t:'mouse'},
+        {l:'BTN2', t:'mouse'}, {l:'BTN1', t:'mouse'}, {l:'BTN3', t:'mouse'}, {l:'', t:'none'}, {l:'', t:'none'},
+      ]
+    ]
+  },
+  {
+    id: 'nav',
+    name: 'Nav',
+    icon: '🧭',
+    accent: '#4fc3f7',
+    activator: {type: 'thumb', index: 3, text: 'Hold Space'},
+    desc: 'Navigation layer. Accessed by holding <code>Space</code> (left thumb). Left side has layer switches and mods. Right side has <strong>arrow keys, Home/End, Page Up/Down</strong>, and clipboard shortcuts.',
+    keys: [
+      [
+        {l:'BOOT', t:'boot'}, {l:'TAP', s:'to', t:'layer-switch'}, {l:'EXTRA', s:'to', t:'layer-switch'}, {l:'BASE', s:'to', t:'layer-switch'}, {l:'—', t:'none'},
+        {l:'REDO', t:'nav'}, {l:'PASTE', t:'nav'}, {l:'COPY', t:'nav'}, {l:'CUT', t:'nav'}, {l:'UNDO', t:'nav'},
+      ],
+      [
+        {l:'GUI', t:'mod'}, {l:'ALT', t:'mod'}, {l:'CTRL', t:'mod'}, {l:'SHIFT', t:'mod'}, {l:'—', t:'none'},
+        {l:'CAPS', s:'word', t:'nav'}, {l:'←', t:'nav'}, {l:'↓', t:'nav'}, {l:'↑', t:'nav'}, {l:'→', t:'nav'},
+      ],
+      [
+        {l:'—', t:'none'}, {l:'RALT', t:'mod'}, {l:'NUM', s:'to', t:'layer-switch'}, {l:'NAV', s:'to', t:'layer-switch'}, {l:'—', t:'none'},
+        {l:'INS', t:'nav'}, {l:'HOME', t:'nav'}, {l:'PgDn', t:'nav'}, {l:'PgUp', t:'nav'}, {l:'END', t:'nav'},
+      ],
+      [
+        {l:'', t:'none'}, {l:'', t:'none'}, {l:'—', t:'none'}, {l:'—', t:'none'}, {l:'—', t:'none'},
+        {l:'RET', t:'thumb'}, {l:'BSPC', t:'thumb'}, {l:'DEL', t:'thumb'}, {l:'', t:'none'}, {l:'', t:'none'},
+      ]
+    ]
+  },
+  {
+    id: 'mouse',
+    name: 'Mouse',
+    icon: '🖱️',
+    accent: '#4db6ac',
+    activator: {type: 'thumb', index: 4, text: 'Hold Tab'},
+    desc: 'Mouse emulation layer. Accessed by holding <code>Tab</code> (left thumb). Right side provides <strong>mouse cursor movement</strong> and <strong>scroll wheel</strong>. Left side has mods and layer switches.',
+    keys: [
+      [
+        {l:'BOOT', t:'boot'}, {l:'TAP', s:'to', t:'layer-switch'}, {l:'EXTRA', s:'to', t:'layer-switch'}, {l:'BASE', s:'to', t:'layer-switch'}, {l:'—', t:'none'},
+        {l:'REDO', t:'nav'}, {l:'PASTE', t:'nav'}, {l:'COPY', t:'nav'}, {l:'CUT', t:'nav'}, {l:'UNDO', t:'nav'},
+      ],
+      [
+        {l:'GUI', t:'mod'}, {l:'ALT', t:'mod'}, {l:'CTRL', t:'mod'}, {l:'SHIFT', t:'mod'}, {l:'—', t:'none'},
+        {l:'—', t:'none'}, {l:'MS ←', t:'mouse'}, {l:'MS ↓', t:'mouse'}, {l:'MS ↑', t:'mouse'}, {l:'MS →', t:'mouse'},
+      ],
+      [
+        {l:'—', t:'none'}, {l:'RALT', t:'mod'}, {l:'SYM', s:'to', t:'layer-switch'}, {l:'MOUSE', s:'to', t:'layer-switch'}, {l:'—', t:'none'},
+        {l:'—', t:'none'}, {l:'WH ←', t:'mouse'}, {l:'WH ↓', t:'mouse'}, {l:'WH ↑', t:'mouse'}, {l:'WH →', t:'mouse'},
+      ],
+      [
+        {l:'', t:'none'}, {l:'', t:'none'}, {l:'—', t:'none'}, {l:'—', t:'none'}, {l:'—', t:'none'},
+        {l:'BTN2', t:'mouse'}, {l:'BTN1', t:'mouse'}, {l:'BTN3', t:'mouse'}, {l:'', t:'none'}, {l:'', t:'none'},
+      ]
+    ]
+  },
+  {
+    id: 'media',
+    name: 'Media',
+    icon: '🎵',
+    accent: '#b388ff',
+    activator: {type: 'thumb', index: 2, text: 'Hold Esc'},
+    desc: 'Media and connectivity layer. Accessed by holding <code>Esc</code> (left thumb). Right side controls <strong>media playback</strong>, <strong>volume</strong>, <strong>RGB lighting</strong>, and <strong>Bluetooth profiles</strong>.',
+    keys: [
+      [
+        {l:'BOOT', t:'boot'}, {l:'TAP', s:'to', t:'layer-switch'}, {l:'EXTRA', s:'to', t:'layer-switch'}, {l:'BASE', s:'to', t:'layer-switch'}, {l:'STUDIO', s:'unlock', t:'layer-switch'},
+        {l:'RGB', s:'tog', t:'media'}, {l:'RGB', s:'effect', t:'media'}, {l:'RGB', s:'hue', t:'media'}, {l:'RGB', s:'sat', t:'media'}, {l:'RGB', s:'bri', t:'media'},
+      ],
+      [
+        {l:'GUI', t:'mod'}, {l:'ALT', t:'mod'}, {l:'CTRL', t:'mod'}, {l:'SHIFT', t:'mod'}, {l:'—', t:'none'},
+        {l:'EP', s:'toggle', t:'media'}, {l:'⏮', t:'media'}, {l:'🔉', t:'media'}, {l:'🔊', t:'media'}, {l:'⏭', t:'media'},
+      ],
+      [
+        {l:'—', t:'none'}, {l:'RALT', t:'mod'}, {l:'FUN', s:'to', t:'layer-switch'}, {l:'MEDIA', s:'to', t:'layer-switch'}, {l:'—', t:'none'},
+        {l:'OUT', s:'toggle', t:'media'}, {l:'BT 0', t:'media'}, {l:'BT 1', t:'media'}, {l:'BT 2', t:'media'}, {l:'BT 3', t:'media'},
+      ],
+      [
+        {l:'', t:'none'}, {l:'', t:'none'}, {l:'—', t:'none'}, {l:'—', t:'none'}, {l:'—', t:'none'},
+        {l:'⏹', t:'thumb'}, {l:'⏯', t:'thumb'}, {l:'🔇', t:'thumb'}, {l:'', t:'none'}, {l:'', t:'none'},
+      ]
+    ]
+  },
+  {
+    id: 'num',
+    name: 'Num',
+    icon: '🔢',
+    accent: '#aed581',
+    activator: {type: 'thumb', index: 6, text: 'Hold Backspace'},
+    desc: 'Number layer. Accessed by holding <code>Backspace</code> (right thumb). Left side has a <strong>numpad-style number layout</strong> with brackets, semicolon, equals, backslash, and grave.',
+    keys: [
+      [
+        {l:'[', t:'sym'}, {l:'7', t:'num'}, {l:'8', t:'num'}, {l:'9', t:'num'}, {l:']', t:'sym'},
+        {l:'—', t:'none'}, {l:'BASE', s:'to', t:'layer-switch'}, {l:'EXTRA', s:'to', t:'layer-switch'}, {l:'TAP', s:'to', t:'layer-switch'}, {l:'BOOT', t:'boot'},
+      ],
+      [
+        {l:';', t:'sym'}, {l:'4', t:'num'}, {l:'5', t:'num'}, {l:'6', t:'num'}, {l:'=', t:'sym'},
+        {l:'—', t:'none'}, {l:'SHIFT', t:'mod'}, {l:'CTRL', t:'mod'}, {l:'ALT', t:'mod'}, {l:'GUI', t:'mod'},
+      ],
+      [
+        {l:'`', t:'sym'}, {l:'1', t:'num'}, {l:'2', t:'num'}, {l:'3', t:'num'}, {l:'\\', t:'sym'},
+        {l:'—', t:'none'}, {l:'NUM', s:'to', t:'layer-switch'}, {l:'NAV', s:'to', t:'layer-switch'}, {l:'RALT', t:'mod'}, {l:'—', t:'none'},
+      ],
+      [
+        {l:'', t:'none'}, {l:'', t:'none'}, {l:'.', t:'thumb'}, {l:'0', t:'num'}, {l:'-', t:'sym'},
+        {l:'—', t:'none'}, {l:'—', t:'none'}, {l:'—', t:'none'}, {l:'', t:'none'}, {l:'', t:'none'},
+      ]
+    ]
+  },
+  {
+    id: 'sym',
+    name: 'Sym',
+    icon: '✦',
+    accent: '#ffb74d',
+    activator: {type: 'thumb', index: 5, text: 'Hold Return'},
+    desc: 'Symbols layer. Accessed by holding <code>Return</code> (right thumb). Left side has <strong>shifted number symbols</strong>: braces, ampersand, asterisk, dollar, percent, caret, exclamation, at-sign, hash, tilde, pipe.',
+    keys: [
+      [
+        {l:'{', t:'sym'}, {l:'&', t:'sym'}, {l:'*', t:'sym'}, {l:'(', t:'sym'}, {l:'}', t:'sym'},
+        {l:'—', t:'none'}, {l:'BASE', s:'to', t:'layer-switch'}, {l:'EXTRA', s:'to', t:'layer-switch'}, {l:'TAP', s:'to', t:'layer-switch'}, {l:'BOOT', t:'boot'},
+      ],
+      [
+        {l:':', t:'sym'}, {l:'$', t:'sym'}, {l:'%', t:'sym'}, {l:'^', t:'sym'}, {l:'+', t:'sym'},
+        {l:'—', t:'none'}, {l:'SHIFT', t:'mod'}, {l:'CTRL', t:'mod'}, {l:'ALT', t:'mod'}, {l:'GUI', t:'mod'},
+      ],
+      [
+        {l:'~', t:'sym'}, {l:'!', t:'sym'}, {l:'@', t:'sym'}, {l:'#', t:'sym'}, {l:'|', t:'sym'},
+        {l:'—', t:'none'}, {l:'SYM', s:'to', t:'layer-switch'}, {l:'MOUSE', s:'to', t:'layer-switch'}, {l:'RALT', t:'mod'}, {l:'—', t:'none'},
+      ],
+      [
+        {l:'', t:'none'}, {l:'', t:'none'}, {l:'(', t:'thumb'}, {l:')', t:'thumb'}, {l:'_', t:'sym'},
+        {l:'—', t:'none'}, {l:'—', t:'none'}, {l:'—', t:'none'}, {l:'', t:'none'}, {l:'', t:'none'},
+      ]
+    ]
+  },
+  {
+    id: 'fun',
+    name: 'Fun',
+    icon: '⚡',
+    accent: '#80deea',
+    activator: {type: 'thumb', index: 7, text: 'Hold Delete'},
+    desc: 'Function keys layer. Accessed by holding <code>Delete</code> (right thumb). Left side has <strong>F1–F12</strong> in a numpad-style arrangement, plus Print Screen, Scroll Lock, and Pause/Break.',
+    keys: [
+      [
+        {l:'F12', t:'fn'}, {l:'F7', t:'fn'}, {l:'F8', t:'fn'}, {l:'F9', t:'fn'}, {l:'PrtSc', t:'fn'},
+        {l:'—', t:'none'}, {l:'BASE', s:'to', t:'layer-switch'}, {l:'EXTRA', s:'to', t:'layer-switch'}, {l:'TAP', s:'to', t:'layer-switch'}, {l:'BOOT', t:'boot'},
+      ],
+      [
+        {l:'F11', t:'fn'}, {l:'F4', t:'fn'}, {l:'F5', t:'fn'}, {l:'F6', t:'fn'}, {l:'ScrLk', t:'fn'},
+        {l:'—', t:'none'}, {l:'SHIFT', t:'mod'}, {l:'CTRL', t:'mod'}, {l:'ALT', t:'mod'}, {l:'GUI', t:'mod'},
+      ],
+      [
+        {l:'F10', t:'fn'}, {l:'F1', t:'fn'}, {l:'F2', t:'fn'}, {l:'F3', t:'fn'}, {l:'Pause', t:'fn'},
+        {l:'—', t:'none'}, {l:'FUN', s:'to', t:'layer-switch'}, {l:'MEDIA', s:'to', t:'layer-switch'}, {l:'RALT', t:'mod'}, {l:'—', t:'none'},
+      ],
+      [
+        {l:'', t:'none'}, {l:'', t:'none'}, {l:'APP', t:'thumb'}, {l:'SPC', t:'thumb'}, {l:'TAB', t:'thumb'},
+        {l:'—', t:'none'}, {l:'—', t:'none'}, {l:'—', t:'none'}, {l:'', t:'none'}, {l:'', t:'none'},
+      ]
+    ]
+  }
+];
+
+// Build the page
+const navEl = document.getElementById('layer-nav');
+const containerEl = document.getElementById('layers-container');
+
+// Base layer key data for the full activator keyboard (must be defined before forEach)
+const baseLayerKeys = [
+  [
+    {l:'Q', t:'alpha'}, {l:'W', t:'alpha'}, {l:'E', t:'alpha'}, {l:'R', t:'alpha'}, {l:'T', t:'alpha'},
+    {l:'Y', t:'alpha'}, {l:'U', t:'alpha'}, {l:'I', t:'alpha'}, {l:'O', t:'alpha'}, {l:'P', t:'alpha'},
+  ],
+  [
+    {l:'A', h:'GUI', t:'homerow'}, {l:'S', h:'ALT', t:'homerow'}, {l:'D', h:'CTRL', t:'homerow'}, {l:'F', h:'SHIFT', t:'homerow'}, {l:'G', t:'alpha'},
+    {l:'H', t:'alpha'}, {l:'J', h:'SHIFT', t:'homerow'}, {l:'K', h:'CTRL', t:'homerow'}, {l:'L', h:'ALT', t:'homerow'}, {l:"'", h:'GUI', t:'homerow'},
+  ],
+  [
+    {l:'Z', h:'BUTTON', t:'homerow'}, {l:'X', h:'RALT', t:'homerow'}, {l:'C', t:'alpha'}, {l:'V', t:'alpha'}, {l:'B', t:'alpha'},
+    {l:'N', t:'alpha'}, {l:'M', t:'alpha'}, {l:',', t:'alpha'}, {l:'.', h:'RALT', t:'homerow'}, {l:'/', h:'BUTTON', t:'homerow'},
+  ],
+  [
+    {l:'', t:'none'}, {l:'', t:'none'}, {l:'ESC', h:'MEDIA', t:'thumb'}, {l:'SPC', h:'NAV', t:'thumb'}, {l:'TAB', h:'MOUSE', t:'thumb'},
+    {l:'RET', h:'SYM', t:'thumb'}, {l:'BSPC', h:'NUM', t:'thumb'}, {l:'DEL', h:'FUN', t:'thumb'}, {l:'', t:'none'}, {l:'', t:'none'},
+  ]
+];
+
+function hexToRGB(hex) {
+  const r = parseInt(hex.slice(1,3), 16);
+  const g = parseInt(hex.slice(3,5), 16);
+  const b = parseInt(hex.slice(5,7), 16);
+  return `${r},${g},${b}`;
+}
+
+layers.forEach((layer, index) => {
+  // Nav button
+  const btn = document.createElement('button');
+  btn.textContent = layer.name;
+  btn.style.setProperty('--layer-accent', layer.accent);
+  btn.dataset.layer = layer.id;
+  if (index === 0) btn.classList.add('active');
+  btn.addEventListener('click', () => switchLayer(layer.id));
+  navEl.appendChild(btn);
+
+  // Section
+  const section = document.createElement('div');
+  section.className = `layer-section ${index === 0 ? 'active' : ''}`;
+  section.id = `section-${layer.id}`;
+
+  section.innerHTML = `
+    <div class="layer-header">
+      <div class="layer-icon" style="background: ${layer.accent}22; color: ${layer.accent}">
+        ${layer.icon}
+      </div>
+      <div class="layer-info">
+        <h2 style="color: ${layer.accent}">${layer.name} Layer</h2>
+        <p>Layer ${index} · ${layer.id.toUpperCase()}</p>
+      </div>
+    </div>
+    <div class="layer-desc">${layer.desc}</div>
+    ${buildKeyboard(layer)}
+    ${buildActivatorRef(layer)}
+  `;
+
+  containerEl.appendChild(section);
+});
+
+// Add legend at end
+const legendHTML = `
+<div class="legend">
+  <div class="legend-item"><div class="legend-swatch" style="background:linear-gradient(180deg,#1e2d50,#162040)"></div> Alpha</div>
+  <div class="legend-item"><div class="legend-swatch" style="background:linear-gradient(180deg,#2a1f50,#201840)"></div> Home Row Mod</div>
+  <div class="legend-item"><div class="legend-swatch" style="background:linear-gradient(180deg,#1a3530,#142828)"></div> Thumb / Layer Tap</div>
+  <div class="legend-item"><div class="legend-swatch" style="background:linear-gradient(180deg,#3a1a2e,#2a1422)"></div> Modifier</div>
+  <div class="legend-item"><div class="legend-swatch" style="background:linear-gradient(180deg,#1a3050,#142540)"></div> Navigation</div>
+  <div class="legend-item"><div class="legend-swatch" style="background:linear-gradient(180deg,#2a3020,#202818)"></div> Number</div>
+  <div class="legend-item"><div class="legend-swatch" style="background:linear-gradient(180deg,#3a2a10,#2a2008)"></div> Symbol</div>
+  <div class="legend-item"><div class="legend-swatch" style="background:linear-gradient(180deg,#1a2a3a,#14222e)"></div> Function</div>
+  <div class="legend-item"><div class="legend-swatch" style="background:linear-gradient(180deg,#2a1a3a,#20142e)"></div> Media / BT</div>
+  <div class="legend-item"><div class="legend-swatch" style="background:linear-gradient(180deg,#1a3a2a,#142e20)"></div> Mouse</div>
+  <div class="legend-item"><div class="legend-swatch" style="background:linear-gradient(180deg,#0d3030,#082525)"></div> Layer Switch</div>
+  <div class="legend-item"><div class="legend-swatch" style="background:linear-gradient(180deg,#4a1515,#351010)"></div> Bootloader</div>
+  <div class="legend-item"><div class="legend-swatch" style="background:rgba(255,255,255,0.02)"></div> None / N/A</div>
+</div>`;
+containerEl.insertAdjacentHTML('beforeend', legendHTML);
+
+function buildActivatorRef(layer) {
+  if (!layer.activator) return ''; // Base layer, no activator
+
+  const accent = layer.accent;
+  const accentRGB = hexToRGB(accent);
+
+  if (layer.activator.type === 'layer-switch') {
+    return `
+      <div class="activator-badge">
+        <span class="activator-icon">⎆</span>
+        <span>Activated via: <strong style="color:${accent}">${layer.activator.text}</strong></span>
+      </div>
+    `;
+  }
+
+  // Determine which keys to highlight: {row, col} pairs
+  let highlightKeys = [];
+  if (layer.activator.type === 'thumb') {
+    // thumb index maps to row=3, col=index
+    highlightKeys = [{row: 3, col: layer.activator.index}];
+  } else if (layer.activator.type === 'pinky') {
+    highlightKeys = layer.activator.keys.map(k => ({row: k.row, col: k.col}));
+  }
+
+  // Build a full base-layer keyboard with highlighted keys
+  let html = `
+    <div class="activator-ref" style="--activator-color:${accent}; --activator-bg:rgba(${accentRGB},0.15); --activator-glow:rgba(${accentRGB},0.25);">
+      <div class="activator-ref-header">
+        <span class="activator-icon">⎆</span>
+        <span>Base layer — hold <strong style="color:${accent}">${layer.activator.text}</strong> to activate</span>
+      </div>
+      <div class="keyboard activator-keyboard">
+  `;
+
+  baseLayerKeys.forEach((row, ri) => {
+    const isThumb = ri === 3;
+    html += `<div class="keyboard-row ${isThumb ? 'thumb-row' : ''}">`;
+
+    row.forEach((key, ki) => {
+      if (ki === 5) html += '<div class="split-gap"></div>';
+
+      const isHighlighted = highlightKeys.some(h => h.row === ri && h.col === ki);
+      const typeClass = getTypeClass(key.t);
+      const glowClass = isHighlighted ? 'key-activator-glow' : '';
+      const mainLabel = key.l || '';
+      const holdLabel = key.h ? `hold: ${key.h}` : '';
+
+      html += `<div class="key ${typeClass} ${glowClass}" title="${mainLabel}${holdLabel ? ' — ' + holdLabel : ''}">`;
+      html += `<span class="main-label">${mainLabel}</span>`;
+      if (holdLabel) html += `<span class="hold-label">${holdLabel}</span>`;
+      html += '</div>';
+    });
+
+    html += '</div>';
+  });
+
+  html += '</div></div>';
+  return html;
+}
+
+
+function buildKeyboard(layer) {
+  let html = '<div class="keyboard">';
+
+  layer.keys.forEach((row, ri) => {
+    const isThumb = ri === 3;
+    html += `<div class="keyboard-row ${isThumb ? 'thumb-row' : ''}">`;
+
+    row.forEach((key, ki) => {
+      // Insert split gap after 5th key (index 4)
+      if (ki === 5) {
+        html += '<div class="split-gap"></div>';
+      }
+
+      const typeClass = getTypeClass(key.t);
+      const mainLabel = key.l || '';
+      const holdLabel = key.h ? `hold: ${key.h}` : '';
+      const subLabel = key.s || '';
+
+      html += `<div class="key ${typeClass}" title="${mainLabel}${holdLabel ? ' — ' + holdLabel : ''}">`;
+      html += `<span class="main-label">${mainLabel}</span>`;
+      if (subLabel) html += `<span class="sub-label">${subLabel}</span>`;
+      if (holdLabel) html += `<span class="hold-label">${holdLabel}</span>`;
+      html += '</div>';
+    });
+
+    html += '</div>';
+  });
+
+  html += '</div>';
+  return html;
+}
+
+function getTypeClass(type) {
+  const map = {
+    'alpha': 'key-alpha',
+    'homerow': 'key-homerow',
+    'thumb': 'key-thumb',
+    'mod': 'key-mod',
+    'nav': 'key-nav',
+    'num': 'key-num',
+    'sym': 'key-sym',
+    'fn': 'key-fn',
+    'media': 'key-media',
+    'mouse': 'key-mouse',
+    'none': 'key-none',
+    'boot': 'key-boot',
+    'layer-switch': 'key-layer-switch',
+  };
+  return map[type] || 'key-alpha';
+}
+
+function switchLayer(id) {
+  document.querySelectorAll('.layer-section').forEach(s => { s.classList.remove('active'); s.style.display = 'none'; });
+  document.querySelectorAll('.layer-nav button').forEach(b => b.classList.remove('active'));
+
+  const target = document.getElementById(`section-${id}`);
+  target.classList.add('active');
+  target.style.display = 'block';
+  document.querySelector(`[data-layer="${id}"]`).classList.add('active');
+}
+
+// Scroll-to-top button
+window.addEventListener('scroll', () => {
+  document.getElementById('scroll-top').classList.toggle('visible', window.scrollY > 300);
+});
+</script>
+</body>
+</html>
